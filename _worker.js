@@ -3,7 +3,7 @@
 import { connect } from 'cloudflare:sockets';
 
 // 建议修改为自己的 UUID
-let userID = 'd342d11e-d424-4583-b36e-524ab1f0afa4';
+let userID = '50170657-e121-4b9e-8da3-2ce2bab0c3ba';
 
 // 生成配置文件的 CF 优选 IP
 const bestCFIP = "www.gov.se"
@@ -32,7 +32,7 @@ export default {
      * @param {import("@cloudflare/workers-types").ExecutionContext} ctx
      * @returns {Promise<Response>}
      */
-    async fetch(request, env, ctx) {
+    async fetch(请求, env, ctx) {
         try {
             userID = env.UID || userID;
             proxyIP = env.PROXYIP || proxyIP;
@@ -40,12 +40,12 @@ export default {
             nodeId = env.NODE_ID || nodeId;
             apiToken = env.API_TOKEN || apiToken;
             apiHost = env.API_HOST || apiHost;
-            const upgradeHeader = request.headers.get('Upgrade');
+            const upgradeHeader = 请求.headers.get('Upgrade');
             if (!upgradeHeader || upgradeHeader !== 'websocket') {
-                const url = new URL(request.url);
+                const url = new 网站(请求.url);
                 switch (url.pathname) {
                     case '/cf':
-                        return new Response(JSON.stringify(request.cf, null, 4), {
+                        return new Response(JSON.stringify(请求.cf, null, 4), {
                             status: 200,
                             headers: {
                                 "Content-Type": "application/json;charset=utf-8",
@@ -93,7 +93,7 @@ export default {
                             return new Response(connectError.message, { status: 500 });
                         }
                     case `/${userID}`: {
-                        const vlessConfig = getVLESSConfig(userID, request.headers.get('Host'));
+                        const vlessConfig = getVLESSConfig(userID, 请求.headers.get('Host'));
                         return new Response(`${vlessConfig}`, {
                             status: 200,
                             headers: {
@@ -102,7 +102,7 @@ export default {
                         });
                     }
                     case `/${userID}/base64`: {
-                        const base64Config = getBase64Config(userID, request.headers.get('Host'));
+                        const base64Config = getBase64Config(userID, 请求.headers.get('Host'));
                         return new Response(`${base64Config}`, {
                             status: 200,
                             headers: {
@@ -111,7 +111,7 @@ export default {
                         });
                     }
                     case `/${userID}/clash`: {
-                        const clashConfig = getClashConfig(userID, request.headers.get('Host'));
+                        const clashConfig = getClashConfig(userID, 请求.headers.get('Host'));
                         return new Response(`${clashConfig}`, {
                             status: 200,
                             headers: {
